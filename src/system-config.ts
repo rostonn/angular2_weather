@@ -7,6 +7,7 @@
  **********************************************************************************************/
 /** Map relative paths to URLs. */
 const map: any = {
+     moment: 'vendor/moment/min/moment.min.js'
 };
 
 /** User packages configuration. */
@@ -30,7 +31,6 @@ const barrels: string[] = [
 
   // Thirdparty barrels.
   'rxjs',
-
   // App specific barrels.
   'app',
   'app/shared',
