@@ -1,96 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import { GeoService } from './geo.service';
-import {Observable} from 'rxjs/Observable';
-import {HTTP_PROVIDERS} from '@angular/http';
-import * as moment from 'moment';
-import { ROUTER_DIRECTIVES,provideRouter, RouterConfig } from '@angular/router';
-
-const routes: RouterConfig = [
-  { path: 'settings', component: SettingsComponent },
-  { path: '/', component: DefaultComponent }
-];
-
-export const appRouterProviders = [
-  provideRouter(routes)
-];
-
 
 @Component({
   moduleId: module.id,
   selector: 'app-root',
-  templateUrl: 'app.component.html',
+  // templateUrl: 'app.component.html',
+  template:`
+  <nav>
+    <img (click)="toggleMenu()" src="../menu.svg"/>
+    <h1 id="title">City Weather</h1>
+
+  </nav>
+  <ul *ngIf="showMenu">
+    <li>
+      <a (click)="toggleMenu()" [routerLink]="['/']" class="menu"><span>Home</span>
+      </a>
+    </li>
+    <li>
+      <a (click)="toggleMenu()" [routerLink]="['/settings']" class="menu">
+          <span>Settings</span>
+      </a>
+    </li>
+  </ul>
+  <div (click)="turnOff()">
+    <router-outlet></router-outlet>
+  </div>
+  `,
+  // styles: ['nav{height:20vh; background-color: blue;}'],
   styleUrls: ['app.component.css'],
-  providers: [GeoService,HTTP_PROVIDERS]
+  directives: [ROUTER_DIRECTIVES],
+  providers: []
 })
-export class AppComponent implements OnInit {
-  title = 'City Weather App';
-  geo = {};
-  errorMessage = '';
-  city = {};
-  weather = {};
-  timeOfDay = '';
-  date = moment().format('MMMM Do YYYY, h:mm:ss a');
-  testD:any = moment().format('H:mm:ss');
-  name = 'Master Debater';
-
-  setDate(){
-      this.date = moment().format('MMMM Do, h:mm a');
-      this.testD = moment().format('H');
-      this.testD = Number(this.testD);
-      if(this.testD >= 12){
-          this.timeOfDay = "Good Afternoon";
-      }
-      else if(this.testD >= 18){
-          this.timeOfDay = "Good Evening";
-      }
-      else{
-          this.timeOfDay = "Good Morning";
-      }
-
-  }
-
-  constructor(private geoService: GeoService){
-       setInterval(() => { this.setDate(); }, 500);
-  }
-
-  getPosition(){
-    this.geoService.getPosition()
-          .subscribe(
-              pos => {this.geo = pos
-                    this.getCity(pos)},
-              error =>  this.errorMessage = <any>error
-          )
-        //   console.log(this.geo);
-
-      }
-    getCity(geo){
-        this.geoService.getCity(geo)
-            .subscribe(
-                city => {
-                        this.city['name'] = city['results'][1]['address_components'][3]['long_name'];
-                        this.city['state'] = city['results'][1]['address_components'][5]['long_name'];
-                        this.city['zipCode'] = city['results'][1]['address_components'][7]['long_name'];
-                        this.getWeather(this.city['zipCode']);
-                    },
-                error => this.errorMessage = <any>error
-            )
+export class AppComponent {
+    showMenu:boolean = false;
+    toggleMenu(){
+        if(this.showMenu){
+            this.showMenu = false;
+        }
+        else{
+            this.showMenu = true;
+        }
     }
-    getWeather(zipCode){
-        this.geoService.getWeather(zipCode)
-            .subscribe(
-                weather => {
-                    console.log(weather['main'])
-                    this.weather['temp'] = ((weather['main']['temp'] - 273.15)*(9/5) + 32).toFixed();
-                },
-                error => this.errorMessage = <any>error
-            )
-    }
-
-    getTimeOfDay(){
-
-    }
-
-    ngOnInit(){
-        this.getPosition();
+    turnOff(){
+        if(this.showMenu){
+            this.showMenu = false;
+        }
     }
 }

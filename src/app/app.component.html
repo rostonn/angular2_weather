@@ -1,17 +1,11 @@
-<h1>
-  {{title}}
-</h1>
-<div *ngIf="city.name && weather.temp">
-    <h1>{{timeOfDay}} {{name}}</h1>
-    <h1>{{weather.temp}}&deg;F</h1>
-    <h1>{{city.name}}, {{city.state}}</h1>
-    <h1>{{date}}</h1>
-</div>
-<!-- AIzaSyDqGtfPHk5BvpeqSB7Me0cYYeN69Zf18KQ
-
- -104.9625963 39.7546399
-
- https://maps.googleapis.com/maps/api/geocode/json?latlng=39.7546399,-104.9625963&key=AIzaSyDqGtfPHk5BvpeqSB7Me0cYYeN69Zf18KQ -->
-
-
-<!-- 26fd59f62356994455fd5b520e7da4d4 -->
+<nav>
+  <ul>
+    <li>
+      <a [routerLink]="['/']">Home</a>
+    </li>
+    <li>
+      <a [routerLink]="['/settings']">Settings</a>
+    </li>
+    <ul>
+</nav>
+<router-outlet></router-outlet>
