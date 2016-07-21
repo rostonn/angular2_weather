@@ -39,7 +39,7 @@ export class GeoService implements OnInit {
             .map(res => res.json());
     }
     getWeather(zipCode): Observable<Object> {
-        let url = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode + ",us&appid=" + environment.weatherKey;
+        let url = "http://api.openweathermap.org/data/2.5/weather?zip=" + zipCode + ",us&appid=" + environment.weatherKey;
         return this.http.get(url)
             .map(res => res.json());
     }
