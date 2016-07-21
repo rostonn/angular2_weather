@@ -4,9 +4,6 @@ import {HTTP_PROVIDERS, Http, Response, XHRBackend} from '@angular/http';
 import 'rxjs/add/operator/map';
 import { environment } from './environment';
 
-console.log(environment.googleKey);
-console.log(environment.weatherKey);
-
 @Injectable()
 export class GeoService implements OnInit {
     geo:any = "";
@@ -42,7 +39,7 @@ export class GeoService implements OnInit {
             .map(res => res.json());
     }
     getWeather(zipCode): Observable<Object> {
-        let url = "http://api.openweathermap.org/data/2.5/weather?zip=" + zipCode + ",us&appid=" + environment.weatherKey;
+        let url = "https://api.openweathermap.org/data/2.5/weather?zip=" + zipCode + ",us&appid=" + environment.weatherKey;
         return this.http.get(url)
             .map(res => res.json());
     }
